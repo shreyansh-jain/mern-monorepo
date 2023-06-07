@@ -2,7 +2,15 @@
   "name": "@mern-monorepo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "develop": "concurrently 'npm run serve:development:frontend' 'npm run serve:development:backend' --kill-others --names 'client,server' -c 'bgBlue,bgGreen'",
+    "serve:development:frontend": "nx serve-static frontend --configuration=development",
+    "serve:development:backend": "nx serve backend --configuration=development",
+    "serve:development": "nx run-many --target=serve --projects=frontend,backend --configuration=development",
+    "serve:production": "nx run-many --target=serve --projects=frontend,backend --configuration=production",
+    "build:production": "nx run-many --target=build --projects=frontend,backend --configuration=production --skip-nx-cache",
+    "preview:release": "env-cmd -e production && node dist/apps/backend/main.js"
+  },
   "private": true,
   "devDependencies": {
     "@nx/cypress": "16.3.2",
@@ -57,6 +65,8 @@
   "dependencies": {
     "@swc/helpers": "~0.5.0",
     "axios": "^1.0.0",
+    "concurrently": "^8.1.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
